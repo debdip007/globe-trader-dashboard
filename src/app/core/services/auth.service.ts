@@ -84,7 +84,15 @@ export class AuthService {
     }
 
     fetchLoggedInUser() {
-        this.http.post<UserResponse>(this.refreshUrl, { email : "s.seller@gmail.com" })
+        let userEmail = this.userSubject.value?.details.email || "";
+        if (!userEmail) {
+            const storedUser = localStorage.getItem(this.USER_KEY); 
+            if (storedUser) {
+                userEmail = JSON.parse(storedUser).details.email;
+            }
+        }
+
+        this.http.post<UserResponse>(this.refreshUrl, { email : userEmail })
         .subscribe(user => {
             this.userSubject.next(user);
             localStorage.setItem(this.USER_KEY, JSON.stringify(user));
