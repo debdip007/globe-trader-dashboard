@@ -48,8 +48,16 @@ export class AuthService {
     refreshToken(): Observable<string | null> {
         const token = this.getToken();
         if (!token) return of(null);
-            
-        return this.http.post<UserResponse>(this.refreshUrl, { email : "s.seller@gmail.com" }).pipe(
+        
+        let userEmail = this.userSubject.value?.details.email || "";
+        if (!userEmail) {
+            const storedUser = localStorage.getItem(this.USER_KEY); 
+            if (storedUser) {
+                userEmail = JSON.parse(storedUser).details.email;
+            }
+        }
+        console.log("Refreshing token for user:", userEmail);
+        return this.http.post<UserResponse>(this.refreshUrl, { email : userEmail }).pipe(
         tap(res => this.setToken(res.details.accessToken)),
         switchMap(res => of(res.details.accessToken)),
         catchError(() => {
@@ -59,7 +67,7 @@ export class AuthService {
         );
     }
 
-    startTokenAutoRefresh(intervalMs: number = 5 * 60 * 1000) {
+    startTokenAutoRefresh(intervalMs: number = 30 * 60 * 1000) {
         return timer(0, intervalMs).pipe(
         switchMap(() => this.refreshToken())
         );
