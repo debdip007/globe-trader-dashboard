@@ -1,0 +1,36 @@
+.animated-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(-45deg, #2196f3, #673ab7, #9c27b0);
+  background-size: 400% 400%;
+  animation: gradientMove 15s ease infinite;
+  z-index: -1; /* Keep it behind Angular Material content */
+}
+
+@keyframes gradientMove {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.background-grey {
+  background-color: #e4e4e4; /* Light grey background */
+}
+
+.text-blue {
+  color: #4375ba; /* Blue text color */
+}
+
+.error.text-red {
+  color: #ed0000; /* Red text color for errors */
+  font-size: 0.875em;
+}

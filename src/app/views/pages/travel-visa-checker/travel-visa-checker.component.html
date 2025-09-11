@@ -1,0 +1,40 @@
+<div class="bg-light dark:bg-transparent min-vh-100 d-flex flex-row align-items-center">
+  <c-container>
+    <c-row class="justify-content-center">
+      <c-col lg="7" md="9" xl="6">
+        <c-card class="mx-4">
+          <c-card-body class="p-4">
+            <form cForm>
+              <h1>Do you need a travel visa?</h1>
+              <h5>Select your passport to find out.</h5>
+              
+              <div [cFormFloating]="true" class="mb-3">                
+                <input cFormControl id="floatingInput" placeholder="Passport country 1" type="text" required="required" />
+                <label cLabel for="floatingInput">Passport country 1 <span class="text-danger">*</span></label>
+              </div>
+
+              <div [cFormFloating]="true" class="mb-3">
+                <input cFormControl id="floatingInput" placeholder="Passport country 2" type="text" />
+                <label cLabel for="floatingInput">Passport country 2 (Optional)</label>
+              </div>
+
+              <div [cFormFloating]="true" class="mb-3">
+                <input cFormControl id="floatingInput" placeholder="Residency/visa 1" type="text" />
+                <label cLabel for="floatingInput">Residency/visa 1 (Optional)</label>
+              </div>
+
+              <div [cFormFloating]="true" class="mb-3">
+                <input cFormControl id="floatingInput" placeholder="Residency/visa 2" type="text" />
+                <label cLabel for="floatingInput">Residency/visa 2 (Optional)</label>
+              </div>
+
+              <div class="d-grid">
+                <button cButton color="success" type="submit">Get Your Result</button>
+              </div>
+            </form>
+          </c-card-body>
+        </c-card>
+      </c-col>
+    </c-row>
+  </c-container>
+</div>
