@@ -21,12 +21,17 @@ import {
 } from '@coreui/angular';
 import { ChartjsComponent } from '@coreui/angular-chartjs';
 import { IconDirective } from '@coreui/icons-angular';
+import { CommonModule } from '@angular/common';
+import { BadgeComponent } from '@coreui/angular';
 
 import { WidgetsBrandComponent } from '../widgets/widgets-brand/widgets-brand.component';
 import { WidgetsDropdownComponent } from '../widgets/widgets-dropdown/widgets-dropdown.component';
 import { DashboardChartsData, IChartProps } from './dashboard-charts-data';
 import { AuthService } from '../../core/services/auth.service';
 import { UserResponse } from '../../core/models/user-response.model';
+import { UserApiService } from '../../core/services/user-api.service';
+import { ApiService } from '../../core/services/api.service';
+import { RequestedUserResponse, Product } from '../../core/models/requested-user.model';
 
 interface IUser {
   name: string;
@@ -45,12 +50,22 @@ interface IUser {
 @Component({
     templateUrl: 'dashboard.component.html',
     styleUrls: ['dashboard.component.scss'],
-    imports: [WidgetsDropdownComponent, TextColorDirective, CardComponent, CardBodyComponent, RowComponent, ColComponent, ButtonDirective, IconDirective, ReactiveFormsModule, ButtonGroupComponent, FormCheckLabelDirective, ChartjsComponent, NgStyle, CardFooterComponent, GutterDirective, ProgressBarDirective, ProgressComponent, WidgetsBrandComponent, CardHeaderComponent, TableDirective, AvatarComponent]
+    imports: [WidgetsDropdownComponent, TextColorDirective, CardComponent, CardBodyComponent, RowComponent, ColComponent, ButtonDirective, IconDirective, ReactiveFormsModule, ButtonGroupComponent, FormCheckLabelDirective, ChartjsComponent, NgStyle, CardFooterComponent, GutterDirective, ProgressBarDirective, ProgressComponent, WidgetsBrandComponent, CardHeaderComponent, TableDirective, AvatarComponent, CommonModule, BadgeComponent]
 })
 export class DashboardComponent implements OnInit {
 
   user: UserResponse | null = null;
-  constructor(private authService: AuthService) {}
+  requestUserList : any = [];
+  products: Product[] = [];
+  loading = true;
+
+  constructor(
+    private authService: AuthService,
+    private userService: UserApiService,
+    private apiService: ApiService
+  ) {
+    this.getRequestedUsers();
+  }
 
   readonly #destroyRef: DestroyRef = inject(DestroyRef);
   readonly #document: Document = inject(DOCUMENT);
@@ -190,5 +205,23 @@ export class DashboardComponent implements OnInit {
         this.mainChartRef().update();
       });
     }
+  }
+
+  
+  getRequestedUsers() {
+    let requestData = {
+      "user_type": "SELLER"
+    };
+    this.apiService.post<RequestedUserResponse>('user/request/product/list', requestData)
+      .subscribe({
+        next: (res) => {
+          this.products = res.products;
+          this.loading = false;          
+        },
+        error: (err) => {
+          console.error(err);
+          this.loading = false;
+        },
+      });
   }
 }

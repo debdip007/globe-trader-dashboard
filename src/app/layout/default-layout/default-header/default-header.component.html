@@ -13,7 +13,7 @@
     </button>
     <c-header-nav class="d-none d-md-flex">
       <c-nav-item>
-        <a cNavLink routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+        <h5><a cNavLink routerLink="/dashboard" routerLinkActive="active" class="text-center">{{user?.details?.user_type == "SELLER" ? "Seller Admin" : user?.details?.user_type == "ADMIN" ? "Admin" : "Super Admin" }} Dashboard</a></h5>
       </c-nav-item>
       <!-- <c-nav-item>
         <a cNavLink routerLink="/users" routerLinkActive="active">Users</a>
@@ -61,13 +61,14 @@
     <button [caret]="false" cDropdownToggle class="py-0 pe-0" aria-label="Open user menu">
       <c-avatar
         shape="rounded-1"
-        src="{{ user?.details?.profile_image }}"
+        [src]="user?.details?.profile_image ? user?.details?.profile_image : 'assets/brand/GlobeTrader_Logo_small.png'"
         status="success"
+        [size]="'md'"
         textColor="primary"
         alt="{{ user?.details?.first_name }} {{ user?.details?.last_name }}"
-        style="height: 50px;"
+        style="height: 50px; width: 50px;"
       />
-      <span class="p-10"> Welcome {{ user?.details?.first_name }} {{ user?.details?.last_name }} </span>
+      <span class="p-10">  Welcome <strong>{{ user?.details?.first_name }} {{ user?.details?.last_name }} </strong></span>
     </button>
     <ul cDropdownMenu class="pt-0 w-auto">
       <!-- <li>
@@ -83,24 +84,24 @@
         </a>
       </li> -->
       
-      <li>
+      <!-- <li>
         <h6 cDropdownHeader class="bg-body-secondary text-body-secondary fw-semibold py-2">
           Settings
         </h6>
-      </li>
+      </li> -->
       <li></li>
       <li>
-        <a cDropdownItem routerLink="">
+        <a cDropdownItem routerLink="/user/profile/{{ user?.details?.id }}">
           <svg cIcon class="me-2" name="cilUser"></svg>
           Profile
         </a>
       </li>
-      <li>
+      <!-- <li>
         <a cDropdownItem routerLink="">
           <svg cIcon class="me-2" name="cilSettings"></svg>
           Settings
         </a>
-      </li>
+      </li> -->
       <li>
         <a cDropdownItem (click)="logout()" style="cursor: pointer;">
           <svg cIcon class="me-2" name="cilAccountLogout"></svg>

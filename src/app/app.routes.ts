@@ -56,7 +56,12 @@ export const routes: Routes = [
       {
         path: 'pages',
         loadChildren: () => import('./views/pages/routes').then((m) => m.routes)
-      }
+      },
+      {
+        path: 'user',
+        loadChildren: () => import('./views/user/routes').then((m) => m.routes),
+        canActivate: [AuthGuard]
+      },
     ]
   },
   {
@@ -93,6 +98,13 @@ export const routes: Routes = [
     loadComponent: () => import('./views/pages/travel-visa-checker/travel-visa-checker.component').then(m => m.TravelVisaCheckerComponent),
     data: {
       title: 'Travel Visa Checker'
+    }
+  },
+  {
+    path: 'data-table',
+    loadComponent: () => import('./components/data-table/data-table.component').then(m => m.DataTableComponent),
+    data: {
+      title: 'Data Table'
     }
   },
   { path: '**', redirectTo: 'login' }

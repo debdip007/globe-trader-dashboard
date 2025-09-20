@@ -14,8 +14,9 @@ export class AuthService {
     public TOKEN_KEY = 'access_token';
     public USER_KEY  = 'auth_user';
 
-    private validateUrl = `${environment.apiBaseUrl}/validate-token`;
-    private refreshUrl = `${environment.apiBaseUrl}/api/auth/get-token`;
+    public validateUrl = `${environment.apiBaseUrl}/validate-token`;
+    public refreshUrl = `${environment.apiBaseUrl}/api/auth/get-token`;
+    public getUserDetailshUrl = `${environment.apiBaseUrl}/api/user/profile/view/`;
 
     private userSubject = new BehaviorSubject<UserResponse | null>(null);
     user$ = this.userSubject.asObservable();

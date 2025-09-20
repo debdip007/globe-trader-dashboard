@@ -1,0 +1,11 @@
+<div class="alert-container">
+  @for (alert of alerts; track alert.id) {
+    <div
+      class="alert"
+      [@fadeSlide]
+      [ngClass]="alert.type"
+      (click)="remove(alert)">
+      {{ alert.message }}
+    </div>
+  }
+</div>

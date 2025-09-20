@@ -1,0 +1,157 @@
+<c-row>  
+  <c-col xs>
+    <c-card class="mb-4">
+      <c-card-body>
+        <form #customStylesForm="ngForm"
+            (ngSubmit)="profileSubmit()"
+            [gutter]="3"
+            [validated]="customStylesValidated"
+            [formGroup]="profileForm"
+            novalidate
+            cForm cRow
+            class="needs-validation"
+      >
+        <h2>Profile Details</h2>
+
+        <div class="mb-3">
+          <img [src]="profileImage ? profileImage : 'assets/brand/GlobeTrader_Logo_small.png'" alt="Profile Image" class="user-profile-image" />
+          <input cFormControl id="formFile" type="file" accept="image/*" (change)="onFileSelected($event)" />          
+          <label cLabel for="formFile" class="mt-2">Select Image to update the Profile Image</label>
+        </div>
+
+        <c-col [md]="6">
+          <label cLabel for="first_name">First name</label>
+          <input cFormControl id="first_name" required type="text" value="" [disabled]="true" formControlName="first_name"/>
+          <!-- <c-form-feedback [valid]="true">Looks good!</c-form-feedback> -->
+        </c-col>
+        <c-col [md]="6">
+          <label cLabel for="last_name">Last name</label>
+          <input cFormControl id="last_name" required type="text" value="" formControlName="last_name"/>
+          <!-- <c-form-feedback [valid]="true">Looks good!</c-form-feedback> -->
+        </c-col>
+
+        <c-col [md]="6">
+          <label cLabel for="email">Email</label>
+          <input cFormControl id="email" required type="email" value="" formControlName="email"/>
+          <!-- <c-form-feedback [valid]="true">Looks good!</c-form-feedback> -->
+        </c-col>
+
+        <c-col [md]="6">
+          <label cLabel for="phone">Phone</label>
+          <input cFormControl id="phone" required type="text" value="" formControlName="phone"/>
+          <!-- <c-form-feedback [valid]="true">Looks good!</c-form-feedback> -->
+        </c-col>
+
+        <c-col [md]="6">
+          <label cLabel for="country">Country</label>
+          <!-- <select cSelect id="country" required formControlName="country">
+            <option value="">Choose Country...</option>
+            <option *ngFor="let opt of countryOptions" [value]="opt">
+              {{ opt }}
+            </option>
+          </select> -->
+          <ng-select
+            [items]="countryOptions"
+            bindLabel="label"
+            bindValue="id"
+            [multiple]="false"
+            [searchable]="true"
+            formControlName="country"
+            placeholder="Select Country">
+          </ng-select>
+          <!-- <c-form-feedback [valid]="false">Please choose country from the list.</c-form-feedback> -->
+        </c-col> 
+
+        <c-col [md]="6"></c-col>
+
+        <c-col [md]="6">
+          <label cLabel for="user_type">Register As</label>
+          <select cSelect id="user_type" required formControlName="user_type">
+            <option *ngFor="let opt of userTypeOptions" [value]="opt.value">
+              {{ opt.label }}
+            </option>
+          </select>
+          <!-- <c-form-feedback [valid]="false">Please provide a valid State.</c-form-feedback> -->
+        </c-col>
+
+        <c-col [md]="6">
+          <label cLabel for="role">Role</label>          
+          <select cSelect id="role" required formControlName="role">
+            <option *ngFor="let opt of roles" [value]="opt">
+              {{ opt }}
+            </option>
+          </select>          
+          <!-- <c-form-feedback [valid]="false">Please provide a valid State.</c-form-feedback> -->
+        </c-col>
+
+        <!-- <c-col [md]="6">
+          <label cLabel for="password">Password</label>
+          <input cFormControl id="password" required type="password" formControlName="phone"/>
+          <c-form-feedback [valid]="false">Enter Password</c-form-feedback>
+        </c-col> -->
+        <hr class="mb-6 mt-6"/>
+        
+        <h2>Business Name</h2>
+
+        <c-col [md]="6">
+          <label cLabel for="company_name">Company Name</label>
+          <input cFormControl id="company_name" required type="text" formControlName="company_name"/>
+          
+          <c-form-feedback [valid]="false" *ngIf="profileForm.get('company_name')?.invalid && profileForm.get('company_name')?.touched">Enter a valid Company Name</c-form-feedback>
+        </c-col>
+
+        <c-col [md]="6">
+          <label cLabel for="website_url">Website URL</label>
+          <input cFormControl id="website_url" required type="text" formControlName="website_url"/>
+          <c-form-feedback [valid]="false" *ngIf="profileForm.get('website_url')?.invalid && profileForm.get('website_url')?.touched">Enter a valid Website URL</c-form-feedback>
+        </c-col>
+
+        <c-col [md]="6">
+          <label cLabel for="business_email">Business Email</label>
+          <input cFormControl id="business_email" required type="text" formControlName="business_email_address"/>
+          <c-form-feedback [valid]="false" *ngIf="profileForm.get('business_email_address')?.invalid && profileForm.get('business_email_address')?.touched">Enter a valid Business Email</c-form-feedback>
+        </c-col>
+
+        <c-col [md]="6">
+          <label cLabel for="business_registration_number">Business Registration Number</label>
+          <input cFormControl id="business_registration_number" required type="text" formControlName="business_registration_number"/>
+          <c-form-feedback [valid]="false" *ngIf="profileForm.get('business_registration_number')?.invalid && profileForm.get('business_registration_number')?.touched">Enter a valid Business Registration Number</c-form-feedback>
+        </c-col>
+        
+        <c-col [md]="6">
+          <label cLabel for="business_country_names">Country of Operation</label>
+          <!-- <select cSelect id="business_country_names" required formControlName="business_country_names">
+            <option value="">Choose...</option>
+            <option>...</option>
+          </select> -->
+          <ng-select
+            [items]="countryOptions"
+            bindLabel="label"
+            bindValue="id"
+            [multiple]="true"
+            [searchable]="true"
+            formControlName="business_country_names"
+            placeholder="Select Country of Operation">
+          </ng-select>
+
+          <c-form-feedback [valid]="false">Please choose country from the list.</c-form-feedback>
+        </c-col> 
+
+        <c-col [md]="12">
+          <label cLabel for="business_description">Business Description</label>
+          <textarea cFormControl id="business_description" required rows="3" formControlName="business_description"></textarea>
+          <c-form-feedback [valid]="false">Please choose country from the list.</c-form-feedback>
+        </c-col> 
+        
+        <c-col [xs]="12">
+          <button cButton class="me-1" color="primary" type="submit">
+            Update Profile
+          </button>
+
+        </c-col>
+      </form>
+      </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>
+

@@ -1,0 +1,220 @@
+<c-row>  
+  <c-col xs>
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+      <a cButton color="primary" class="btn mb-3 btn-primary me-md-2" routerLink="/user/products">Back</a>      
+    </div>
+    
+    <c-card class="mb-4">
+      <c-card-body>
+        <form #customStylesForm="ngForm"
+            (ngSubmit)="productSubmit()"
+            [gutter]="3"
+            [validated]="customStylesValidated"
+            [formGroup]="productForm"
+            novalidate
+            cForm cRow
+            class="needs-validation"
+      >
+        <h4>
+          {{productName}}
+          <small class="text-muted">( {{productSku}} )</small>
+        </h4>
+
+        <label cLabel for="sub_category">Main Imaage</label>
+        <c-col [md]="3">          
+          <img [src]="mainImage ? mainImage : 'assets/brand/GlobeTrader_Logo_small.png'" alt="Profile Image" class="user-profile-image" />
+          <input cFormControl id="formFile" type="file" accept="image/*" (change)="onFileSelected($event)" />          
+          <label cLabel for="formFile" class="mt-2">Select Image to update the Main Image</label>
+        </c-col>
+
+        <c-col [md]="12">
+          <label cLabel for="sub_category">Additional Image</label>
+          <c-row>  
+            <c-col [md]="3" *ngFor="let addImg of additional_image" >
+              <img [src]="addImg.image ? addImg.image : 'assets/brand/GlobeTrader_Logo_small.png'" alt="Profile Image" class="user-profile-image" />
+              <input cFormControl id="formFile_{{addImg.id}}" type="file" accept="image/*" (change)="onFileSelected($event)" />          
+              <label cLabel for="formFile" class="mt-2">Select Image to update the Additional Image</label>
+            </c-col>
+          </c-row>
+        </c-col>
+        
+        <hr />
+
+        <c-col [md]="6">
+          <label cLabel for="category">Category</label>
+          <select cSelect id="category" required formControlName="category">
+            <option *ngFor="let opt of categoryOptions" [value]="opt.id">
+              {{ opt.name }}
+            </option>
+          </select>
+          <!-- <ng-select
+            [items]="categoryOptions"
+            bindLabel="name"
+            bindValue="id"
+            [multiple]="false"
+            [searchable]="true"
+            formControlName="category"
+            placeholder="Select Category">
+          </ng-select> -->
+        </c-col>
+
+        <c-col [md]="6">
+          <label cLabel for="sub_category">Sub-category</label>
+          <select cSelect id="sub_category" required formControlName="sub_category" *ngIf="subCategoryOptions != null && subCategoryOptions.length > 0; else noData">
+            <option *ngFor="let opt of subCategoryOptions" [value]="opt.id">
+              {{ opt.name }}
+            </option>
+          </select>
+
+          <ng-template #noData>
+            <p class="text-danger">No sub category available</p>
+          </ng-template>
+          <!-- <ng-select
+            [items]="subCategoryOptions"
+            bindLabel="label"
+            bindValue="id"
+            [multiple]="false"
+            [searchable]="true"
+            formControlName="sub_category"
+            placeholder="Select Sub Category">
+          </ng-select> -->
+        </c-col>
+
+        <c-col [md]="12">
+          <label cLabel for="product_name">Product name</label>
+          <input cFormControl id="product_name" required type="text" value="" formControlName="product_name"/>
+          <!-- <c-form-feedback [valid]="true">Looks good!</c-form-feedback> -->
+        </c-col>
+
+        <c-col [md]="6">
+          <label cLabel for="sku">SKU</label>
+          <input cFormControl id="sku" required type="text" value="" formControlName="sku"/>
+        </c-col>
+
+        <c-col [md]="6">
+          <label cLabel for="product_unit">Available in Qty</label>
+          <select cSelect id="product_unit" required formControlName="product_unit">
+            <option *ngFor="let opt of productUnitOptions" [value]="opt">
+              {{ opt }}
+            </option>
+          </select>
+          <!-- <c-form-feedback [valid]="true">Looks good!</c-form-feedback> -->
+        </c-col>
+
+        <c-col [md]="6">
+          <label cLabel for="product_capacity">Product Capacity</label>
+          <c-col [md]="6">
+            <input cFormControl id="product_capacity" required type="text" value="" formControlName="product_capacity"/>
+          </c-col>
+          <c-col [md]="6">
+            <select cSelect id="product_capacity_unit" required formControlName="product_capacity_unit">
+            <option *ngFor="let opt of productCapacityOptions" [value]="opt">
+              {{ opt }}
+            </option>
+          </select>
+          </c-col>
+
+
+          
+          
+        </c-col>
+
+        <c-col [md]="6">
+          <label cLabel for="minimum_order_qty">Minimum Order Qty</label>
+          <input cFormControl id="minimum_order_qty" required type="text" value="" formControlName="minimum_order_qty"/>
+        </c-col> 
+
+        <!-- <c-col [md]="6"></c-col> -->
+
+        <c-col [md]="6">
+          <label cLabel for="user_type">Product Origin</label>
+          <ng-select
+            [items]="countryOptions"
+            bindLabel="label"
+            [multiple]="true"
+            [searchable]="true"
+            formControlName="country"
+            placeholder="Select Product Origin">
+          </ng-select>          
+        </c-col>
+
+        <c-col [md]="12">
+          <label cLabel for="role">Product Description</label>          
+          <textarea cFormControl id="product_description" required rows="3" formControlName="product_description"></textarea>
+        </c-col>
+
+        <c-col [md]="6">
+            <label cLabel for="status">Status</label> 
+            <div class="mt-6">  
+              <mat-slide-toggle formControlName="status" color="success">
+                {{ productForm.get('status') ? 'ON' : 'OFF' }}
+              </mat-slide-toggle>
+            </div>   
+                  
+            <!-- <mat-slide-toggle formControlName="status">
+              {{ productForm.get('status')?.value ? 'Active' : 'Inactive' }}
+            </mat-slide-toggle> -->
+        </c-col>
+
+        
+        <hr class="mb-6 mt-6"/>
+        
+        <!-- <h2>Business Name</h2>
+
+        <c-col [md]="6">
+          <label cLabel for="company_name">Company Name</label>
+          <input cFormControl id="company_name" required type="text" formControlName="company_name"/>
+          
+          <c-form-feedback [valid]="false" *ngIf="profileForm.get('company_name')?.invalid && profileForm.get('company_name')?.touched">Enter a valid Company Name</c-form-feedback>
+        </c-col>
+
+        <c-col [md]="6">
+          <label cLabel for="website_url">Website URL</label>
+          <input cFormControl id="website_url" required type="text" formControlName="website_url"/>
+          <c-form-feedback [valid]="false" *ngIf="profileForm.get('website_url')?.invalid && profileForm.get('website_url')?.touched">Enter a valid Website URL</c-form-feedback>
+        </c-col>
+
+        <c-col [md]="6">
+          <label cLabel for="business_email">Business Email</label>
+          <input cFormControl id="business_email" required type="text" formControlName="business_email_address"/>
+          <c-form-feedback [valid]="false" *ngIf="profileForm.get('business_email_address')?.invalid && profileForm.get('business_email_address')?.touched">Enter a valid Business Email</c-form-feedback>
+        </c-col>
+
+        <c-col [md]="6">
+          <label cLabel for="business_registration_number">Business Registration Number</label>
+          <input cFormControl id="business_registration_number" required type="text" formControlName="business_registration_number"/>
+          <c-form-feedback [valid]="false" *ngIf="profileForm.get('business_registration_number')?.invalid && profileForm.get('business_registration_number')?.touched">Enter a valid Business Registration Number</c-form-feedback>
+        </c-col>
+        
+        <c-col [md]="6">
+          <label cLabel for="business_country_names">Country of Operation</label>          
+          <ng-select
+            [items]="countryOptions"
+            bindLabel="label"
+            bindValue="id"
+            [multiple]="true"
+            [searchable]="true"
+            formControlName="business_country_names"
+            placeholder="Select Country of Operation">
+          </ng-select>
+
+          <c-form-feedback [valid]="false">Please choose country from the list.</c-form-feedback>
+        </c-col> 
+
+        <c-col [md]="12">
+          <label cLabel for="business_description">Business Description</label>
+          <textarea cFormControl id="business_description" required rows="3" formControlName="business_description"></textarea>
+          <c-form-feedback [valid]="false">Please choose country from the list.</c-form-feedback>
+        </c-col>  -->
+        
+        <c-col [xs]="12">
+          <button cButton class="me-1" color="primary" type="submit">
+            Update Product
+          </button>
+
+        </c-col>
+      </form>
+      </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>

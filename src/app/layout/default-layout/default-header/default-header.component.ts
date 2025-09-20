@@ -135,8 +135,8 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
   // ];
 
   logout(): void {
-    localStorage.removeItem('access_token');
-    this.authService.clearUser();
     window.location.href = '/login';
+    localStorage.removeItem('access_token');
+    this.authService.clearUser();    
   } 
 }

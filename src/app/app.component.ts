@@ -8,12 +8,15 @@ import { ColorModeService } from '@coreui/angular';
 import { IconSetService } from '@coreui/icons-angular';
 import { iconSubset } from './icons/icon-subset';
 import { AuthService } from './core/services/auth.service';
-import { UserResponse } from './core/models/user-response.model';
+import { AlertComponent } from './shared/alert/alert.component';
+import { LoaderComponent } from './shared/loader/loader.component';
 
 @Component({
     selector: 'app-root',
-    template: '<router-outlet />',
-    imports: [RouterOutlet]
+    template: `<router-outlet></router-outlet>
+    <app-alert></app-alert>
+    <!-- <app-loader></app-loader>-->`, 
+    imports: [RouterOutlet, AlertComponent, LoaderComponent]
 })
 export class AppComponent implements OnInit {
   title = 'Globe Trader Admin Panel';

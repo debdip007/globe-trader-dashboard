@@ -26,8 +26,7 @@ export class LoginComponent {
     private fb: FormBuilder, 
     private apiService: ApiService,
     private authService: AuthService,
-    private router: Router
-    
+    private router: Router    
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -36,17 +35,20 @@ export class LoginComponent {
   }
 
   onSubmit (): void {
+    // this.loader.show();
     if (this.loginForm.valid) {
       const loginData = this.loginForm.value;
 
       this.apiService.post<UserResponse>('auth/login', loginData)
           .subscribe({
             next: (res) => {
+              // this.alert.success('CSV uploaded successfully', { timeout: 4000 });
               if(res.details.user_type == "SELLER") {
                 // ✅ Save JWT token to localStorage
                 console.log('Login successful:', res.details.accessToken);
                 this.authService.setToken(res.details.accessToken);
                 localStorage.setItem(this.authService.USER_KEY, JSON.stringify(res));
+                this.authService.fetchLoggedInUser();
                 // Navigate to dashboard or another page
                 this.router.navigate(['/dashboard']);                
               }else{
