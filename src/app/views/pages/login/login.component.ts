@@ -43,16 +43,16 @@ export class LoginComponent {
           .subscribe({
             next: (res) => {
               // this.alert.success('CSV uploaded successfully', { timeout: 4000 });
-              if(res.details.user_type == "SELLER") {
+              if(res.details.user_type == "BUYER") {
+                this.errorMessage = 'Access denied. Buyer cannot log in here.';
+              }else{
                 // ✅ Save JWT token to localStorage
                 console.log('Login successful:', res.details.accessToken);
                 this.authService.setToken(res.details.accessToken);
                 localStorage.setItem(this.authService.USER_KEY, JSON.stringify(res));
                 this.authService.fetchLoggedInUser();
                 // Navigate to dashboard or another page
-                this.router.navigate(['/dashboard']);                
-              }else{
-                this.errorMessage = 'Access denied. Buyer cannot log in here.';
+                this.router.navigate(['/dashboard']);                 
               }              
             },
             error: (err) => {

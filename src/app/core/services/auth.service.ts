@@ -5,6 +5,7 @@ import { switchMap, catchError, tap } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { UserResponse } from '../models/user-response.model';
 import { BehaviorSubject } from 'rxjs';
+import { jwtDecode } from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root'
@@ -104,5 +105,17 @@ export class AuthService {
         localStorage.removeItem(this.TOKEN_KEY);
         localStorage.removeItem(this.USER_KEY);
         this.userSubject.next(null);
+    }
+
+    getUserPermissions(): string[] {
+        const token = this.getToken();
+        if (!token) return [];
+        const decoded: any = jwtDecode(token);
+        console.log(decoded.permissions);        
+        return decoded.permissions || [];
+    }
+
+    hasPermission(permission: string): boolean {
+        return this.getUserPermissions().includes(permission);
     }
 }

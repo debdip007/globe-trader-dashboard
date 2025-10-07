@@ -321,7 +321,7 @@
 <c-row>
   <div *ngIf="loading">Loading sellers...</div>
   <h4>Pending Requests</h4>
-  <c-col xs>
+  <c-col xs *ngIf="products.length > 0; else noRequest ">
     <c-card class="mb-4">
       <c-card-body>
         <table
@@ -398,4 +398,8 @@
       </c-card-body>
     </c-card>
   </c-col>
+
+  <ng-template #noRequest>
+    <p>No request(s) found at this time.</p>
+  </ng-template>
 </c-row>

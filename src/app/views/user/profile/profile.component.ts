@@ -64,7 +64,9 @@ export class ProfileComponent {
   userTypeOptions = [
     { id: '', value: '', label: 'Choose User Type' },
     { id: 'SELLER', value: 'SELLER', label: 'SELLER' },
-    { id: 'BUYER', value: 'BUYER', label: 'BUYER' }
+    { id: 'BUYER', value: 'BUYER', label: 'BUYER' },
+    { id: 'ADMIN', value: 'ADMIN', label: 'ADMIN' },
+    { id: 'SUPER_ADMIN', value: 'SUPER_ADMIN', label: 'SUPER_ADMIN' }
   ];
 
   roleByUsertype: Record<string, string[]> = {
@@ -87,7 +89,7 @@ export class ProfileComponent {
       first_name: ['', Validators.required],
       last_name: ['', Validators.required],
       company_name: ['', Validators.required],
-      website_url: ['', Validators.required],
+      website: ['', Validators.required],
       business_email_address: ['', [Validators.required, Validators.email]],
       // business_contact_number: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(15)]],
       business_registration_number: ['', Validators.required],
@@ -97,7 +99,7 @@ export class ProfileComponent {
       phone: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(15)]],
       country: ['', Validators.required],
       user_type: ['', Validators.required],
-      role: ['', Validators.required]      
+      role: ['']      
     });
 
     this.profileForm.get('user_type')?.valueChanges.subscribe(userType => {
@@ -143,7 +145,7 @@ export class ProfileComponent {
             country: res.details.country,
             user_type: res.details.user_type,
             company_name: res.details.profile_details?.company_name,
-            website_url: res.details.profile_details?.website,
+            website: res.details.profile_details?.website,
             business_email_address: res.details.profile_details?.business_email_address,
             business_registration_number: res.details.profile_details?.business_registration_number,
             business_country_names: res.details.profile_details?.business_country_names,
@@ -194,8 +196,10 @@ export class ProfileComponent {
       alert('Please select an image first!');
       return;
     }
+    const profileData = this.profileForm.value;
+    
     const payload = {
-      user_type : 'SELLER',
+      user_type : profileData.user_type,
       profile_image: base64Image
     };
 

@@ -65,6 +65,7 @@ export class DashboardComponent implements OnInit {
     private apiService: ApiService
   ) {
     this.getRequestedUsers();
+    console.log(this.authService.hasPermission('create_product'));
   }
 
   readonly #destroyRef: DestroyRef = inject(DestroyRef);

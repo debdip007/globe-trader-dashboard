@@ -1,6 +1,11 @@
 import { INavData } from '@coreui/angular';
 
-export const navItems: INavData[] = [
+
+export interface INavDataWithPermission extends INavData {
+  permission?: string;
+}
+
+export const navItems: INavDataWithPermission[] = [
   {
     name: 'Dashboard',
     url: '/dashboard',
@@ -8,17 +13,32 @@ export const navItems: INavData[] = [
     badge: {
       color: 'info',
       text: 'NEW'
-    }
+    },
+    permission: 'view_dashboard'
   },
   {
     name: 'Products',
     url: '/user/products',
-    iconComponent: { name: 'cil-puzzle' }
+    iconComponent: { name: 'cil-puzzle' },
+    permission: 'view_product'
   },
   {
     name: 'Request',
     url: '/buyers-requests',
-    iconComponent: { name: 'cil-bell' }
+    iconComponent: { name: 'cil-bell' },
+    permission: 'view_request'
+  },
+  {
+    name: 'User Role',
+    url: '/buyers-requests',
+    iconComponent: { name: 'cil-spreadsheet' },
+    permission: 'view_role'
+  },
+  {
+    name: 'Categories',
+    url: '/buyers-requests',
+    iconComponent: { name: 'cil-basket' },
+    permission: 'view_category'
   },
   // {
   //   title: true,

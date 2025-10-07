@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { NgScrollbar } from 'ngx-scrollbar';
 
@@ -16,7 +16,8 @@ import {
 } from '@coreui/angular';
 
 import { DefaultFooterComponent, DefaultHeaderComponent } from './';
-import { navItems } from './_nav';
+import { navItems, INavDataWithPermission } from './_nav';
+import { AuthService } from '../../core/services/auth.service';
 
 function isOverflown(element: HTMLElement) {
   return (
@@ -47,6 +48,33 @@ function isOverflown(element: HTMLElement) {
     ShadowOnScrollDirective
   ]
 })
-export class DefaultLayoutComponent {
-  public navItems = [...navItems];
+// export class DefaultLayoutComponent {
+//   public navItems = [...navItems];
+// }
+
+
+export class DefaultLayoutComponent implements OnInit {
+  public navItems: INavDataWithPermission[] = [];
+
+  constructor(
+    private auth: AuthService
+  ) {}
+
+  ngOnInit(): void {
+    const permissions = this.auth.getUserPermissions();
+    this.navItems = this.filterNavItems(navItems, permissions);
+  }
+
+  private filterNavItems(
+    items: INavDataWithPermission[],
+    permissions: string[]
+  ): INavDataWithPermission[] {
+    return items
+      .filter(item => !item.permission || permissions.includes(item.permission))
+      .map(item => ({
+        ...item,
+        children: item.children ? this.filterNavItems(item.children as INavDataWithPermission[], permissions) : undefined
+      }));
+  }
+
 }
