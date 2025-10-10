@@ -28,6 +28,13 @@ export const routes: Routes = [
     data: {
       title: `Product Details`
     }
+  },
+  {
+    path: 'user-list/:type',
+    loadComponent: () => import('./users/users.component').then(m => m.UsersComponent),
+    data: {
+      title: `User List`
+    }
   }
 ];
 
