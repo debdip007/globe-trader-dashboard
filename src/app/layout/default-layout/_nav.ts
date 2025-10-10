@@ -40,6 +40,30 @@ export const navItems: INavDataWithPermission[] = [
     iconComponent: { name: 'cil-basket' },
     permission: 'view_category'
   },
+  {
+    name: 'Super Admin Users',
+    url: '/user-list/super_admin',
+    iconComponent: { name: 'cil-user' },
+    permission: 'view_super_admin'
+  },
+  {
+    name: 'Admin Users',
+    url: '/user-list/admin',
+    iconComponent: { name: 'cil-user' },
+    permission: 'view_admin'
+  },
+  {
+    name: 'Seller Users',
+    url: '/user-list/seller',
+    iconComponent: { name: 'cil-user' },
+    permission: 'view_seller'
+  },
+  {
+    name: 'Seller Buyer',
+    url: '/user-list/buyer',
+    iconComponent: { name: 'cil-user' },
+    permission: 'view_buyer'
+  },
   // {
   //   title: true,
   //   name: 'Theme'
