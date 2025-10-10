@@ -1,1 +1,79 @@
-<p>users works!</p>
+<c-row>
+  <div *ngIf="loading">Loading sellers...</div>
+  <h4>Product List</h4>
+  <c-col xs>
+    <c-card class="mb-4">
+      <c-card-body>
+        <div class="table-header">
+          <mat-form-field appearance="outline">
+            <mat-label>Search</mat-label>
+            <input matInput (keyup)="applyFilter($event)" placeholder="Search users..." />
+            <button *ngIf="searchValue" matSuffix mat-icon-button aria-label="Clear" (click)="clearFilter()">
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+        </div>
+
+          <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 custom-table">
+
+            <!-- ID Column -->
+            <ng-container matColumnDef="image">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Image</th>
+              <td mat-cell *matCellDef="let element"><img src="{{element.main_image}}" alt="{{element.product_name}}" style="width: 70px; height: auto;"/> </td>
+            </ng-container>
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Product Name</th>
+              <td mat-cell *matCellDef="let element">{{ element.product_name }}</td>
+            </ng-container>
+
+            <!-- SKU Column -->
+            <ng-container matColumnDef="sku">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>SKU</th>
+              <td mat-cell *matCellDef="let element">{{ element.sku }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="country">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Country</th>
+              <td mat-cell *matCellDef="let element">{{ element.country }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="moq">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>MOQ</th>
+              <td mat-cell *matCellDef="let element">{{ element.minimum_order_qty }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="capacity">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Capacity</th>
+              <td mat-cell *matCellDef="let element">{{ element.product_capacity }} / {{ element.product_capacity_unit }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="status">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+              <td mat-cell *matCellDef="let element">
+                <c-badge color="{{ element.status == 1 ? 'success' : (element.status == 2 ? 'danger' : 'warning') }}">
+                  {{ element.status == 1 ? 'Approved' : (element.status == 2 ? 'Rejected' : 'Pending') }}
+                </c-badge>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef>Actions</th>
+              <td mat-cell *matCellDef="let element" class="text-center actions-cell">
+                <!-- <button mat-raised-button color="primary" (click)="onView(element)">View</button> -->
+                <button cButton color="primary" class="btn mb-3 btn-primary btn-sm me-1 mb-1 mb-md-0" [routerLink]="['/user/product-details', element.id]">Edit</button>
+                <button cButton color="danger" class="btn mb-3 btn-primary btn-sm mb-1 mb-md-0" (click)="deleteProduct(element.id)">Delete</button>
+              </td>
+            </ng-container>
+            
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          </table>
+
+          <mat-paginator [pageSizeOptions]="[5, 10]" showFirstLastButtons></mat-paginator>
+      </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>
