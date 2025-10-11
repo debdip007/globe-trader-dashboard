@@ -1,6 +1,6 @@
 <c-row>
-  <div *ngIf="loading">Loading sellers...</div>
-  <h4>Product List</h4>
+  <div *ngIf="loading">Loading users...</div>
+  <h4>{{ this.userType.replace('_', ' ') | titlecase }} User List</h4>
   <c-col xs>
     <c-card class="mb-4">
       <c-card-body>
@@ -23,30 +23,30 @@
             </ng-container>
 
             <!-- Name Column -->
-            <ng-container matColumnDef="name">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header>Product Name</th>
-              <td mat-cell *matCellDef="let element">{{ element.product_name }}</td>
+            <ng-container matColumnDef="first_name">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>First Name</th>
+              <td mat-cell *matCellDef="let element">{{ element.first_name }}</td>
             </ng-container>
 
             <!-- SKU Column -->
-            <ng-container matColumnDef="sku">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header>SKU</th>
-              <td mat-cell *matCellDef="let element">{{ element.sku }}</td>
+            <ng-container matColumnDef="last_name">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Last Name</th>
+              <td mat-cell *matCellDef="let element">{{ element.last_name }}</td>
             </ng-container>
 
-            <ng-container matColumnDef="country">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header>Country</th>
-              <td mat-cell *matCellDef="let element">{{ element.country }}</td>
+            <ng-container matColumnDef="email">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
+              <td mat-cell *matCellDef="let element">{{ element.email }}</td>
             </ng-container>
 
-            <ng-container matColumnDef="moq">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header>MOQ</th>
-              <td mat-cell *matCellDef="let element">{{ element.minimum_order_qty }}</td>
+            <ng-container matColumnDef="country_code">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Country Code</th>
+              <td mat-cell *matCellDef="let element">{{ element.country_code }}</td>
             </ng-container>
 
-            <ng-container matColumnDef="capacity">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header>Capacity</th>
-              <td mat-cell *matCellDef="let element">{{ element.product_capacity }} / {{ element.product_capacity_unit }}</td>
+            <ng-container matColumnDef="phone">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Phone</th>
+              <td mat-cell *matCellDef="let element">{{ element.phone }}</td>
             </ng-container>
 
             <ng-container matColumnDef="status">
@@ -62,7 +62,7 @@
               <th mat-header-cell *matHeaderCellDef>Actions</th>
               <td mat-cell *matCellDef="let element" class="text-center actions-cell">
                 <!-- <button mat-raised-button color="primary" (click)="onView(element)">View</button> -->
-                <button cButton color="primary" class="btn mb-3 btn-primary btn-sm me-1 mb-1 mb-md-0" [routerLink]="['/user/product-details', element.id]">Edit</button>
+                <button cButton color="primary" class="btn mb-3 btn-primary btn-sm me-1 mb-1 mb-md-0" [routerLink]="['/user/profile', element.id]">Edit</button>
                 <button cButton color="danger" class="btn mb-3 btn-primary btn-sm mb-1 mb-md-0" (click)="deleteProduct(element.id)">Delete</button>
               </td>
             </ng-container>

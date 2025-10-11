@@ -65,38 +65,46 @@ export class UsersComponent {
         private route: ActivatedRoute,
         private fb: FormBuilder,
         private commonService: CommonService       
-    ) {
-    this.getUsers();
+    ) {      
   }
 
   searchValue: string = '';
   loading = true;
   userType: string = '';
-  displayedColumns: string[] = ['image','name','sku', 'country', 'moq', 'capacity', 'status', 'actions'];
+  displayedColumns: string[] = ['first_name', 'last_name', 'email', 'country_code', 'phone', 'status', 'actions'];
   dataSource = new MatTableDataSource<UserResponse>([]);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   
   ngOnInit(): void {
-    this.userType = this.route.snapshot.paramMap.get('type')!;   
+    // this.userType = this.route.snapshot.paramMap.get('type')!;  
+    this.getUsers(this.userType.toUpperCase());
+
+    this.route.paramMap.subscribe(params => {
+      this.userType = params.get('type')!;
+      if (this.userType) {
+        this.getUsers(this.userType.toUpperCase());
+      }
+    });
   }
 
-  getUsers(): void {
-    let requestData = {
-      // Define any request parameters if needed
-      "page" : 0,
-      "page_size" : 10,
-      "user_type" : this.userType
+  getUsers(userType : string): void {
+    let type = this.userType;
+    console.log(userType);
+    // return false;
+
+    let requestData = {      
+      "user_type" : userType
     };
 
     this.loading = true;
-    this.apiService.post<any>('user/products', requestData)
+    this.apiService.post<any>('backend/user-list', requestData)
       .subscribe({
         next: (res) => {
-          this.dataSource.data = res.products;
+          this.dataSource.data = res.details;
           // this.products = res.products;
-          console.log('Products data loaded:', res);
+          console.log('User data loaded:', res);
           this.loading = false;
         },
         error: (err) => {

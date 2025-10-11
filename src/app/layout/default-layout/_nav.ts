@@ -59,7 +59,7 @@ export const navItems: INavDataWithPermission[] = [
     permission: 'view_seller'
   },
   {
-    name: 'Seller Buyer',
+    name: 'Buyer Users',
     url: '/user/user-list/buyer',
     iconComponent: { name: 'cil-user' },
     permission: 'view_buyer'
