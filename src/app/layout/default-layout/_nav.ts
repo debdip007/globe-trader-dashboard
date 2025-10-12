@@ -3,6 +3,7 @@ import { INavData } from '@coreui/angular';
 
 export interface INavDataWithPermission extends INavData {
   permission?: string;
+  children?: INavDataWithPermission[];
 }
 
 export const navItems: INavDataWithPermission[] = [
@@ -29,41 +30,58 @@ export const navItems: INavDataWithPermission[] = [
     permission: 'view_request'
   },
   {
-    name: 'User Role',
-    url: '/buyers-requests',
-    iconComponent: { name: 'cil-spreadsheet' },
-    permission: 'view_role'
-  },
-  {
-    name: 'Categories',
-    url: '/buyers-requests',
-    iconComponent: { name: 'cil-basket' },
-    permission: 'view_category'
-  },
-  {
-    name: 'Super Admin Users',
-    url: '/user/user-list/super_admin',
+    name: 'Users',
+    url: '/user',
     iconComponent: { name: 'cil-user' },
-    permission: 'view_super_admin'
+    permission: 'view_user',
+    children: [
+      {
+        name: 'Super Admin Users',
+        url: '/user/user-list/super_admin',
+        icon: 'nav-icon-bullet',
+        permission: 'view_super_admin',
+      },
+      {
+        name: 'Admin Users',
+        url: '/user/user-list/admin',
+        icon: 'nav-icon-bullet',
+        permission: 'view_admin'
+      },
+      {
+        name: 'Seller Users',
+        url: '/user/user-list/seller',
+        icon: 'nav-icon-bullet',
+        permission: 'view_seller'
+      },
+      {
+        name: 'Buyer Users',
+        url: '/user/user-list/buyer',
+        icon: 'nav-icon-bullet',
+        permission: 'view_buyer'
+      },
+    ]
   },
   {
-    name: 'Admin Users',
-    url: '/user/user-list/admin',
-    iconComponent: { name: 'cil-user' },
-    permission: 'view_admin'
+    name: 'Settings',
+    url: '/settings',
+    iconComponent: { name: 'cil-settings' },
+    permission: 'view_super_admin',
+    children: [
+      {
+        name: 'Category',
+        url: '/settings/category',
+        icon: 'nav-icon-bullet',
+        permission: 'view_category',
+      },
+      {
+        name: 'User Role',
+        url: '/settings/role',
+        icon: 'nav-icon-bullet',
+        permission: 'view_role'
+      },
+    ]
   },
-  {
-    name: 'Seller Users',
-    url: '/user/user-list/seller',
-    iconComponent: { name: 'cil-user' },
-    permission: 'view_seller'
-  },
-  {
-    name: 'Buyer Users',
-    url: '/user/user-list/buyer',
-    iconComponent: { name: 'cil-user' },
-    permission: 'view_buyer'
-  },
+  
   // {
   //   title: true,
   //   name: 'Theme'

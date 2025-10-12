@@ -22,7 +22,7 @@ import {
   TextColorDirective,
   BadgeComponent
 } from '@coreui/angular';
-import { UserResponse, Details } from '../../../core/models/user-response.model';
+import { CategoryResponse, CategoryElement } from '../../../core/models/category.model';
 import { CommonModule } from '@angular/common';
 
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
@@ -33,78 +33,64 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { RouterLink } from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
+import { DataTransferService } from '../../../core/services/data-transfer.service';
 
 @Component({
-  selector: 'app-users',
+  selector: 'app-category-list',
   imports: [TextColorDirective,
-    ButtonDirective,    
-    BadgeComponent,
-    CommonModule,
-    MatTableModule,
-    MatSortModule,
-    MatPaginatorModule,
-    MatButtonModule,
-    MatIconModule,
-    MatTooltipModule,
-    MatFormFieldModule,
-    MatInputModule,
-    RouterLink,    
-    CardBodyComponent,
-    CardComponent,        
-    RowComponent,
-    ColComponent
-  ],
-  templateUrl: './users.component.html',
-  styleUrl: './users.component.scss'
+      ButtonDirective,    
+      BadgeComponent,
+      CommonModule,
+      MatTableModule,
+      MatSortModule,
+      MatPaginatorModule,
+      MatButtonModule,
+      MatIconModule,
+      MatTooltipModule,
+      MatFormFieldModule,
+      MatInputModule,
+      RouterLink,    
+      CardBodyComponent,
+      CardComponent,        
+      RowComponent,
+      ColComponent
+    ],
+  templateUrl: './category-list.component.html',
+  styleUrl: './category-list.component.scss'
 })
-export class UsersComponent {
-
+export class CategoryListComponent {
+  searchValue: string = '';
+  loading = true;
+  userType: string = '';
+  dataSource = new MatTableDataSource<CategoryResponse>([]);
+  displayedColumns: string[] = ['name', 'status', 'actions'];
+  
   constructor(
         private apiService: ApiService,
         private route: ActivatedRoute,
         private fb: FormBuilder,
-        private commonService: CommonService       
+        private commonService: CommonService,
+        private router: Router,
+        private dataService: DataTransferService       
     ) {      
   }
-
-  searchValue: string = '';
-  loading = true;
-  userType: string = '';
-  displayedColumns: string[] = ['first_name', 'last_name', 'email', 'country_code', 'phone', 'status', 'actions'];
-  dataSource = new MatTableDataSource<UserResponse>([]);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   
   ngOnInit(): void {
-    // this.userType = this.route.snapshot.paramMap.get('type')!;  
-    // this.getUsers(this.userType.toUpperCase());
-
-    this.route.paramMap.subscribe(params => {
-      this.userType = params.get('type')!;
-      if (this.userType) {
-        this.getUsers(this.userType.toUpperCase());
-      }
-    });
+    this.getCategory();
   }
 
-  getUsers(userType : string): void {
-    let type = this.userType;
-    console.log(userType);
-    // return false;
-
-    let requestData = {      
-      "user_type" : userType
-    };
-
+  getCategory(): void {
     this.loading = true;
-    this.apiService.post<any>('backend/user-list', requestData)
+    this.apiService.get<any>('common/category')
       .subscribe({
         next: (res) => {
-          this.dataSource.data = res.details;
+          this.dataSource.data = res.category;
           // this.products = res.products;
-          console.log('User data loaded:', res);
+          console.log('Category data loaded:', res);
           this.loading = false;
         },
         error: (err) => {
@@ -114,9 +100,11 @@ export class UsersComponent {
       });
   }
 
-  viewProduct(id: number): void {
+  viewCategory(obj: any): void {
     // Implement view product logic here
-    console.log('View product with ID:', id);
+    this.dataService.setData(obj);
+    this.router.navigate(['/settings/category-details']);
+    // console.log('View product with ID:', id);
   }
 
   ngAfterViewInit(): void {
@@ -143,4 +131,5 @@ export class UsersComponent {
     this.searchValue = '';
     this.dataSource.filter = '';
   }
+
 }

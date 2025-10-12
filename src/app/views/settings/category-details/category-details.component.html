@@ -1,0 +1,92 @@
+<c-row>  
+  <c-col xs>
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+      <a cButton color="primary" class="btn mb-3 btn-primary me-md-2" routerLink="/settings/category">Back</a>      
+    </div>
+    
+    <c-card class="mb-4">
+      <c-card-body>
+        <form #customStylesForm="ngForm"
+            (ngSubmit)="categorySubmit()"
+            [gutter]="3"
+            [validated]="customStylesValidated"
+            [formGroup]="categoryForm"
+            novalidate
+            cForm cRow
+            class="needs-validation"
+      >
+        <c-col [md]="12">
+          <label cLabel for="name">Category name</label>
+          <input cFormControl id="name" required type="text" value="" formControlName="name"/>
+        </c-col>
+
+        <c-col [md]="12" class="mt-2">
+          <label cLabel for="status">Status</label> 
+          <div class="mt-6">  
+            <mat-slide-toggle formControlName="status" color="success">
+              {{ categoryForm.get('status') ? 'ON' : 'OFF' }}
+            </mat-slide-toggle>
+          </div>
+        </c-col>
+        
+        <button cButton class="me-1 mt-4" color="primary" type="submit" *ngIf="canUpdateCategory">
+          Update Category
+        </button>
+      </form>
+    </c-card-body>
+  </c-card>
+</c-col>
+</c-row>
+
+<c-row>
+  <div *ngIf="loading">Loading Sub category...</div>
+  <h4>Sub Category List</h4>
+  <c-col xs>
+    <c-card class="mb-4">
+      <c-card-body>
+        <div class="table-header">
+          <mat-form-field appearance="outline">
+            <mat-label>Search</mat-label>
+            <input matInput (keyup)="applyFilter($event)" placeholder="Search users..." />
+            <button *ngIf="searchValue" matSuffix mat-icon-button aria-label="Clear" (click)="clearFilter()">
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+        </div>
+
+
+        <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 custom-table" *ngIf="dataSource">
+        <!-- Name Column -->
+        <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Sub-category Name</th>
+            <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+            <td mat-cell *matCellDef="let element">
+            <c-badge color="{{ element.status == 1 ? 'success' : (element.status == 2 ? 'danger' : 'warning') }}">
+                {{ element.status == 1 ? 'Approved' : (element.status == 2 ? 'Rejected' : 'Pending') }}
+            </c-badge>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>Actions</th>
+            <td mat-cell *matCellDef="let element" class="text-center actions-cell">
+            <!-- <button mat-raised-button color="primary" (click)="onView(element)">View</button> -->
+            <button cButton color="primary" class="btn mb-3 btn-primary btn-sm me-1 mb-1 mb-md-0" (click)="viewCategory(element)">Edit</button>
+            <button cButton color="danger" class="btn mb-3 btn-primary btn-sm mb-1 mb-md-0" (click)="deleteProduct(element.id)">Delete</button>
+            </td>
+        </ng-container>
+        
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+
+        <mat-paginator [pageSizeOptions]="[10, 20]" showFirstLastButtons></mat-paginator>
+      </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>

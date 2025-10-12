@@ -62,6 +62,11 @@ export const routes: Routes = [
         loadChildren: () => import('./views/user/routes').then((m) => m.routes),
         canActivate: [AuthGuard]
       },
+      {
+        path: 'settings',
+        loadChildren: () => import('./views/settings/routes').then((m) => m.routes),
+        canActivate: [AuthGuard]
+      },
     ]
   },
   {
