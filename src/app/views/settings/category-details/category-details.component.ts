@@ -45,7 +45,7 @@ import { MatInputModule } from '@angular/material/input';
 import { RouterLink, Router } from '@angular/router';
 import { DataTransferService } from '../../../core/services/data-transfer.service';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { AuthService } from 'src/app/core/services/auth.service';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-category-details',
