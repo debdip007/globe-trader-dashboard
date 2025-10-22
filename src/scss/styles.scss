@@ -151,3 +151,20 @@ ease-in-out;
   color: white;
   margin-left: .25rem;
 }
+
+.snackbar-success .mat-mdc-snackbar-surface {
+  background-color: var(--cui-success) !important;
+  color: white !important;
+  z-index: 100000;
+}
+
+.snackbar-error .mat-mdc-snackbar-surface {
+  background-color: #f44336 !important;
+  color: white !important;
+  z-index: 100000;
+}
+
+.mdc-button .mdc-button__label {
+  color: #ffffff !important;
+  font-size: 16px;
+}

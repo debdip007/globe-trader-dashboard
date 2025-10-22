@@ -10,16 +10,19 @@ import { iconSubset } from './icons/icon-subset';
 import { AuthService } from './core/services/auth.service';
 import { AlertComponent } from './shared/alert/alert.component';
 import { LoaderComponent } from './shared/loader/loader.component';
+import { LoaderService } from './shared/loader/loader.service';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
     selector: 'app-root',
     template: `<router-outlet></router-outlet>
     <app-alert></app-alert>
-    <!-- <app-loader></app-loader>-->`, 
-    imports: [RouterOutlet, AlertComponent, LoaderComponent]
+    <app-loader [isLoading]="isLoading"></app-loader>`, 
+    imports: [RouterOutlet, AlertComponent, LoaderComponent, MatSnackBarModule]
 })
 export class AppComponent implements OnInit {
   title = 'Globe Trader Admin Panel';
+  isLoading = false;
 
   readonly #destroyRef: DestroyRef = inject(DestroyRef);
   readonly #activatedRoute: ActivatedRoute = inject(ActivatedRoute);
@@ -30,7 +33,8 @@ export class AppComponent implements OnInit {
   readonly #iconSetService = inject(IconSetService);
 
   constructor(
-    private authService: AuthService
+    private authService: AuthService,
+    private loaderService: LoaderService
   ) {
     this.#titleService.setTitle(this.title);
     // iconSet singleton
@@ -63,6 +67,10 @@ export class AppComponent implements OnInit {
 
       this.authService.startTokenAutoRefresh().subscribe(token => {
         if (!token) console.log('Token expired, user needs to login again.');
+      });
+
+      this.loaderService.loading$.subscribe(state => {
+        this.isLoading = state;
       });
   }
 }

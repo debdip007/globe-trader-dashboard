@@ -29,6 +29,7 @@ import { UtilHelper } from '../../../helpers/util.helper';
 import { CommonService } from '../../../core/services/common.service';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-product-details',
@@ -74,6 +75,7 @@ export class ProductDetailsComponent {
   // status: any;
   productName = "";
   productSku = "";
+  imageBaseUrl = "";
 
   constructor(
       private apiService: ApiService,
@@ -118,6 +120,8 @@ export class ProductDetailsComponent {
       this.subCategoryOptions = this.commonService.getSubCategories(category_id) || [];
       
     });
+
+    this.imageBaseUrl = environment.apiBaseUrl+'/images';
   }
 
   ngOnInit(): void {

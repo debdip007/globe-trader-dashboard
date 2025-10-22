@@ -4,6 +4,8 @@ import { ApiService } from '../../../core/services/api.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonService } from '../../../core/services/common.service';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { FormSubModalComponent } from './sub-category-form-modal.component';
+import { NotificationService } from '../../../shared/notification/notification.service';
 
 import {
   AvatarComponent,
@@ -46,6 +48,7 @@ import { RouterLink, Router } from '@angular/router';
 import { DataTransferService } from '../../../core/services/data-transfer.service';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { AuthService } from '../../../core/services/auth.service';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-category-details',
@@ -96,7 +99,9 @@ export class CategoryDetailsComponent {
     private dataService: DataTransferService, 
     private apiService: ApiService,
     private fb: FormBuilder,
-    public authService: AuthService
+    public authService: AuthService,
+    private dialog: MatDialog,
+    private notify: NotificationService
   ) {    
     this.categoryForm = this.fb.group({
       name: ['', Validators.required],
@@ -142,6 +147,25 @@ export class CategoryDetailsComponent {
   }
 
   categorySubmit(): void {
+    if (this.categoryForm.valid) {
+      const categoryData = this.categoryForm.value;
+      categoryData.category_id = this.category?.id;
+      console.log(categoryData);
+      
+      this.apiService.post<any>('backend/modify-category', categoryData)
+        .subscribe({
+          next: (res) => {   
+            this.notify.success('Category updated successfully!')         
+            console.log(res);
+            // this.router.navigate(['/dashboard']);                                        
+          },
+          error: (err) => {
+            this.notify.error('Something went wrong. Please try after some time.');
+            console.error(err);
+          },
+        });
+    }
+    
     console.log("form submited");
   } 
 
@@ -175,5 +199,35 @@ export class CategoryDetailsComponent {
   clearFilter() {
     this.searchValue = '';
     this.dataSource.filter = '';
+  }
+
+  openForm(): void {
+    const dialogRef = this.dialog.open(FormSubModalComponent, {
+      width: '600px',
+      disableClose: true
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        result.parent_id = this.category?.id;
+        
+        this.apiService.post<any>('backend/modify-category', result)
+        .subscribe({
+          next: (res) => {            
+            console.log(res);
+            this.notify.success('Sub-category Created successfully!');
+            const currentUrl = this.router.url;
+            this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+              this.router.navigate([currentUrl]);
+            });
+            // this.router.navigate(['/dashboard']);                                        
+          },
+          error: (err) => {
+            this.notify.error('Something went wrong. Please try after some time.');
+            console.error(err);
+          },
+        });
+      }
+    });
   }
 }

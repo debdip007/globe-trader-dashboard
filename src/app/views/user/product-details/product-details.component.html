@@ -31,7 +31,7 @@
           <label cLabel for="sub_category">Additional Image</label>
           <c-row>  
             <c-col [md]="3" *ngFor="let addImg of additional_image" >
-              <img [src]="addImg.image ? addImg.image : 'assets/brand/GlobeTrader_Logo_small.png'" alt="Profile Image" class="user-profile-image" />
+              <img [src]="addImg.image ? imageBaseUrl+'/'+addImg.image : 'assets/brand/GlobeTrader_Logo_small.png'" alt="Profile Image" class="user-profile-image" />
               <input cFormControl id="formFile_{{addImg.id}}" type="file" accept="image/*" (change)="onFileSelected($event)" />          
               <label cLabel for="formFile" class="mt-2">Select Image to update the Additional Image</label>
             </c-col>

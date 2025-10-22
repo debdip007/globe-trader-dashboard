@@ -23,7 +23,7 @@ export const routes: Routes = [
     }
   },
   {
-    path: 'product-details/:id',
+    path: 'role-details',
     loadComponent: () => import('./user-role-details/user-role-details.component').then(m => m.UserRoleDetailsComponent),
     data: {
       title: `Role Details`

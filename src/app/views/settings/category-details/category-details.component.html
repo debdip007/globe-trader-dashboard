@@ -1,7 +1,7 @@
 <c-row>  
   <c-col xs>
     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-      <a cButton color="primary" class="btn mb-3 btn-primary me-md-2" routerLink="/settings/category">Back</a>      
+      <a cButton color="primary" class="btn mb-3 btn-primary me-md-2" routerLink="/settings/category">Back</a>
     </div>
     
     <c-card class="mb-4">
@@ -24,7 +24,7 @@
           <label cLabel for="status">Status</label> 
           <div class="mt-6">  
             <mat-slide-toggle formControlName="status" color="success">
-              {{ categoryForm.get('status') ? 'ON' : 'OFF' }}
+              {{ categoryForm.get('status') ? 'Active' : 'In-Active' }}
             </mat-slide-toggle>
           </div>
         </c-col>
@@ -41,8 +41,12 @@
 <c-row>
   <div *ngIf="loading">Loading Sub category...</div>
   <h4>Sub Category List</h4>
+  <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+    <a cButton color="success" class="btn mb-3 btn-success me-md-2" (click)="openForm()">Add Sub Category</a>
+  </div>
   <c-col xs>
     <c-card class="mb-4">
+      
       <c-card-body>
         <div class="table-header">
           <mat-form-field appearance="outline">

@@ -30,6 +30,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { RouterLink } from '@angular/router';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-products',
@@ -58,9 +59,10 @@ export class ProductsComponent {
   loading = true;
   products: Product[] = [];
   constructor(
-      private apiService: ApiService        
+      private apiService: ApiService,
+      private authService: AuthService        
   ) {
-    this.getProducts();
+    // this.getProducts();
   }
 
   // dataSource = new MatTableDataSource<User>(USER_DATA);
@@ -71,14 +73,22 @@ export class ProductsComponent {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    const storedUser = localStorage.getItem(this.authService.USER_KEY);
+    const user = JSON.parse(localStorage.getItem(this.authService.USER_KEY) || '{}');
 
-  getProducts(): void {
+    if(user) {
+      let userType = user.details?.user_type;
+      this.getProducts(userType);
+    }
+  }
+
+  getProducts(user_type:any): void {
     let requestData = {
       // Define any request parameters if needed
       "page" : 0,
-      "page_size" : 10,
-      "user_type" : "SELLER"
+      "page_size" : 100,
+      "user_type" : user_type
     };
 
     this.loading = true;

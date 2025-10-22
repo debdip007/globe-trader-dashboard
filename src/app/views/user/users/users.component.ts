@@ -109,6 +109,7 @@ export class UsersComponent {
         },
         error: (err) => {
           this.loading = false;
+          this.dataSource.data = [];
           console.error(err);
         },
       });

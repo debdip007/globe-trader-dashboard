@@ -1,6 +1,9 @@
 import { ApplicationConfig, importProvidersFrom } from '@angular/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideAnimations } from '@angular/platform-browser/animations';
+import { loaderInterceptor } from '../app/shared/loader/loader.interceptor';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+
 
 import {
   provideRouter,
@@ -35,6 +38,7 @@ export const appConfig: ApplicationConfig = {
     IconSetService,
     provideAnimationsAsync(),
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
-    provideAnimations()
+    provideAnimations(),
+    provideHttpClient(withInterceptors([loaderInterceptor]))
   ]
 };

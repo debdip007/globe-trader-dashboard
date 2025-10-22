@@ -32,6 +32,7 @@ import { UserResponse } from '../../core/models/user-response.model';
 import { UserApiService } from '../../core/services/user-api.service';
 import { ApiService } from '../../core/services/api.service';
 import { RequestedUserResponse, Product } from '../../core/models/requested-user.model';
+import { ActivatedRoute } from '@angular/router';
 
 interface IUser {
   name: string;
@@ -62,12 +63,15 @@ export class DashboardComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private userService: UserApiService,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private route: ActivatedRoute
   ) {
-    this.getRequestedUsers();
+    // this.getRequestedUsers();
     console.log(this.authService.hasPermission('create_product'));
   }
 
+  userType: string = '';
+  
   readonly #destroyRef: DestroyRef = inject(DestroyRef);
   readonly #document: Document = inject(DOCUMENT);
   readonly #renderer: Renderer2 = inject(Renderer2);
@@ -169,6 +173,20 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     this.initCharts();
     this.updateChartOnColorModeChange();
+    const storedUser = localStorage.getItem(this.authService.USER_KEY);
+    const user = JSON.parse(localStorage.getItem(this.authService.USER_KEY) || '{}');
+
+    if(user) {
+      let userType = user.details?.user_type;
+      this.getRequestedUsers(userType);
+    }
+    
+    // this.route.paramMap.subscribe(params => {
+    //   this.userType = params.get('type')!;
+    //   if (this.userType) {
+    //     this.getRequestedUsers(this.userType.toUpperCase());
+    //   }
+    // });
   }
 
   initCharts(): void {
@@ -209,9 +227,9 @@ export class DashboardComponent implements OnInit {
   }
 
   
-  getRequestedUsers() {
+  getRequestedUsers(userType:any) {
     let requestData = {
-      "user_type": "SELLER"
+      "user_type": userType
     };
     this.apiService.post<RequestedUserResponse>('user/request/product/list', requestData)
       .subscribe({

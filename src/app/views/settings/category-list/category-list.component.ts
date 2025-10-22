@@ -35,6 +35,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { RouterLink, Router } from '@angular/router';
 import { DataTransferService } from '../../../core/services/data-transfer.service';
+import { MatDialog } from '@angular/material/dialog';
+import { NotificationService } from '../../../shared/notification/notification.service';
+import { FormModalComponent } from '../category-details/category-form-modal.component';
 
 @Component({
   selector: 'app-category-list',
@@ -72,7 +75,9 @@ export class CategoryListComponent {
         private fb: FormBuilder,
         private commonService: CommonService,
         private router: Router,
-        private dataService: DataTransferService       
+        private dataService: DataTransferService,
+        private dialog: MatDialog,
+        private notify: NotificationService       
     ) {      
   }
 
@@ -85,10 +90,10 @@ export class CategoryListComponent {
 
   getCategory(): void {
     this.loading = true;
-    this.apiService.get<any>('common/category')
+    this.apiService.get<any>('backend/category-list')
       .subscribe({
         next: (res) => {
-          this.dataSource.data = res.category;
+          this.dataSource.data = res.details;
           // this.products = res.products;
           console.log('Category data loaded:', res);
           this.loading = false;
@@ -132,4 +137,33 @@ export class CategoryListComponent {
     this.dataSource.filter = '';
   }
 
+  openForm(): void {
+    const dialogRef = this.dialog.open(FormModalComponent, {
+      width: '600px',
+      disableClose: true
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log('Form Data:', result);
+
+        this.apiService.post<any>('backend/modify-category', result)
+        .subscribe({
+          next: (res) => {            
+            console.log(res);
+            this.notify.success('Category Created successfully!');
+            
+            const currentUrl = this.router.url;
+            this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+              this.router.navigate([currentUrl]);
+            });
+            // this.router.navigate(['/dashboard']);                                        
+          },
+          error: (err) => {
+            console.error(err);
+          },
+        });
+      }
+    });
+  }
 }
