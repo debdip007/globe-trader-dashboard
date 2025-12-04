@@ -1,6 +1,9 @@
 <c-row>
   <div *ngIf="loading">Loading sellers...</div>
   <h4>Product List</h4>
+  <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+    <!-- <a cButton color="success" class="btn mb-3 btn-success me-md-2" routerLink="/user/product-details">Add Product</a>       -->
+  </div>
   <c-col xs>
     <c-card class="mb-4">
       <c-card-body>
@@ -23,6 +26,11 @@
             </ng-container>
 
             <!-- Name Column -->
+            <ng-container matColumnDef="email">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Seller</th>
+              <td mat-cell *matCellDef="let element">{{ element.seller.email }}</td>
+            </ng-container>
+
             <ng-container matColumnDef="name">
               <th mat-header-cell *matHeaderCellDef mat-sort-header>Product Name</th>
               <td mat-cell *matCellDef="let element">{{ element.product_name }}</td>
@@ -53,7 +61,7 @@
               <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
               <td mat-cell *matCellDef="let element">
                 <c-badge color="{{ element.status == 1 ? 'success' : (element.status == 2 ? 'danger' : 'warning') }}">
-                  {{ element.status == 1 ? 'Approved' : (element.status == 2 ? 'Rejected' : 'Pending') }}
+                  {{ element.status == 0 ? 'Pending' : (element.status == 1 ? 'Approve' : (element.status == 2 ? 'On Hold' : 'Rejected')) }}
                 </c-badge>
               </td>
             </ng-container>

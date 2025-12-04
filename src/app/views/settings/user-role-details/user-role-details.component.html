@@ -7,7 +7,7 @@
     <c-card class="mb-4">
       <c-card-body>
         <form #customStylesForm="ngForm"
-            (ngSubmit)="categorySubmit()"
+            (ngSubmit)="roleSubmit()"
             [gutter]="3"
             [validated]="customStylesValidated"
             [formGroup]="roleForm"
@@ -29,13 +29,14 @@
             <h3>Permission List</h3>  
             <c-col [md]="12" *ngFor="let opt of options">
                 <label>
-                <input
-                    type="checkbox"
-                    [value]="opt.id"
-                    (change)="onCheckboxChange($event)"
-                    [checked]="roleForm.value.permissions.includes(opt.id)"
-                />
-                {{ opt.name }} [{{opt.description}}]
+                  <mat-checkbox
+                      type="checkbox"
+                      [value]="opt.id"
+                      (change)="onCheckboxChange($event)"
+                      [checked]="roleForm.value.permissions.includes(opt.id)"
+                  >
+                    {{ opt.name }} [{{opt.description}}]
+                  </mat-checkbox>
                 </label>
             </c-col>
         </c-col>

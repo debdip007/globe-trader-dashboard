@@ -32,7 +32,9 @@ import { UserResponse } from '../../core/models/user-response.model';
 import { UserApiService } from '../../core/services/user-api.service';
 import { ApiService } from '../../core/services/api.service';
 import { RequestedUserResponse, Product } from '../../core/models/requested-user.model';
+import { DashboardCount, Buyer, UserCount, Details } from '../../core/models/dashboard-count.model';
 import { ActivatedRoute } from '@angular/router';
+import { DashboardDataService } from '../../core/services/dashboard-data.service';
 
 interface IUser {
   name: string;
@@ -59,12 +61,16 @@ export class DashboardComponent implements OnInit {
   requestUserList : any = [];
   products: Product[] = [];
   loading = true;
+  dashboardCount?: DashboardCount;
+  dashboardDetails?: Details;
+  currentYear : any;
 
   constructor(
     private authService: AuthService,
     private userService: UserApiService,
     private apiService: ApiService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private dashboardService: DashboardDataService
   ) {
     // this.getRequestedUsers();
     console.log(this.authService.hasPermission('create_product'));
@@ -176,9 +182,16 @@ export class DashboardComponent implements OnInit {
     const storedUser = localStorage.getItem(this.authService.USER_KEY);
     const user = JSON.parse(localStorage.getItem(this.authService.USER_KEY) || '{}');
 
+    this.currentYear = new Date().getFullYear();
+
     if(user) {
-      let userType = user.details?.user_type;
+      let userType = user.details?.user_type;      
       this.getRequestedUsers(userType);
+      // this.getDashboardCount(userType, this.currentYear);
+
+      this.dashboardService.getDashboardCount(userType,this.currentYear).subscribe(data => {
+        this.dashboardDetails = data?.details; 
+      });
     }
     
     // this.route.paramMap.subscribe(params => {
@@ -242,5 +255,30 @@ export class DashboardComponent implements OnInit {
           this.loading = false;
         },
       });
+  }
+
+  getDashboardCount(userType:any, date:any) {
+    console.log("getDashboardCount call");
+    let requestData = {
+      "user_type" : userType,
+      "date" : date
+    };
+    
+    this.apiService.post<DashboardCount>('backend/dashboard-details', requestData)
+      .subscribe({
+        next: (res) => {          
+          this.dashboardCount = res;
+          this.dashboardDetails = res.details; 
+          // this.total_request = res.details.total_request;
+        },
+        error: (err) => {
+          console.error(err);
+        },
+      });
+  }
+
+  getPercentage(totalValue:any, countValue:any) {
+    if (!totalValue) return 0;
+    return (countValue / totalValue) * 100;
   }
 }

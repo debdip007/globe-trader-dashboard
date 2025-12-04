@@ -9,6 +9,7 @@ import { ApiService } from '../../../core/services/api.service';
 import { Router } from '@angular/router';
 import { UserResponse } from '../../../core/models/user-response.model';
 import { AuthService } from '../../../core/services/auth.service';
+import { NotificationService } from '../../../shared/notification/notification.service';
 
 @Component({
     selector: 'app-login',
@@ -26,7 +27,8 @@ export class LoginComponent {
     private fb: FormBuilder, 
     private apiService: ApiService,
     private authService: AuthService,
-    private router: Router    
+    private router: Router,
+    private notify: NotificationService    
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -45,6 +47,7 @@ export class LoginComponent {
               // this.alert.success('CSV uploaded successfully', { timeout: 4000 });
               if(res.details.user_type == "BUYER") {
                 this.errorMessage = 'Access denied. Buyer cannot log in here.';
+                this.notify.error('Access denied. Buyer cannot log in here.');
               }else{
                 // ✅ Save JWT token to localStorage
                 console.log('Login successful:', res.details.accessToken);
@@ -52,12 +55,14 @@ export class LoginComponent {
                 localStorage.setItem(this.authService.USER_KEY, JSON.stringify(res));
                 this.authService.fetchLoggedInUser();
                 // Navigate to dashboard or another page
-                this.router.navigate(['/dashboard']);                 
+                this.router.navigate(['/dashboard']);  
+                this.notify.success('Successfully Login to the Admin Portal.');               
               }              
             },
             error: (err) => {
               console.error(err);
-              this.errorMessage = 'Invalid credentials!';
+              this.notify.error('Invalid credentials! Please try again.');
+              this.errorMessage = 'Invalid credentials! Please try again.';
             },
           });
           

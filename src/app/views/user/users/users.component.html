@@ -1,6 +1,10 @@
 <c-row>
   <div *ngIf="loading">Loading users...</div>
   <h4>{{ this.userType.replace('_', ' ') | titlecase }} User List</h4>
+  <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+    <!-- <a cButton color="primary" class="btn mb-3 btn-primary me-md-2" >Back</a> -->
+    <a cButton color="success" class="btn mb-3 btn-success me-md-2" [routerLink]="['/user/profile', userType]">Add New {{ this.userType.replace('_', ' ') | titlecase }}</a>
+  </div>
   <c-col xs>
     <c-card class="mb-4">
       <c-card-body>
@@ -53,7 +57,7 @@
               <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
               <td mat-cell *matCellDef="let element">
                 <c-badge color="{{ element.status == 1 ? 'success' : (element.status == 2 ? 'danger' : 'warning') }}">
-                  {{ element.status == 1 ? 'Approved' : (element.status == 2 ? 'Rejected' : 'Pending') }}
+                  {{ element.status == 0 ? 'Pending' : (element.status == 1 ? 'Active' : (element.status == 2 ? 'On Hold' : 'Rejected')) }}
                 </c-badge>
               </td>
             </ng-container>

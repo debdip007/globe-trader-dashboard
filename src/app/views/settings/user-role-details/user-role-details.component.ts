@@ -52,6 +52,7 @@ import { DataTransferService } from '../../../core/services/data-transfer.servic
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { AuthService } from '../../../core/services/auth.service';
 import { MatDialog } from '@angular/material/dialog';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @Component({
   selector: 'app-user-role-details',
@@ -84,7 +85,8 @@ import { MatDialog } from '@angular/material/dialog';
       FormFeedbackComponent,
       FormSelectDirective,
       ButtonDirective,
-      RouterLink
+      RouterLink,
+      MatCheckboxModule
     ],  
 })
 export class UserRoleDetailsComponent {
@@ -149,24 +151,24 @@ export class UserRoleDetailsComponent {
     this.dataService.clearData();
   }
 
-  categorySubmit(): void {
+  roleSubmit(): void {
     if (this.roleForm.valid) {
-      const categoryData = this.roleForm.value;
-      categoryData.category_id = this.role?.id;
-      console.log(categoryData);
+      const roleData = this.roleForm.value;
+      roleData.category_id = this.role?.id;
+      console.log(roleData);
       
-      this.apiService.post<any>('backend/modify-category', categoryData)
-        .subscribe({
-          next: (res) => {   
-            this.notify.success('Category updated successfully!')         
-            console.log(res);
-            // this.router.navigate(['/dashboard']);                                        
-          },
-          error: (err) => {
-            this.notify.error('Something went wrong. Please try after some time.');
-            console.error(err);
-          },
-        });
+      // this.apiService.post<any>('backend/modify-category', categoryData)
+      //   .subscribe({
+      //     next: (res) => {   
+      //       this.notify.success('Category updated successfully!')         
+      //       console.log(res);
+      //       // this.router.navigate(['/dashboard']);                                        
+      //     },
+      //     error: (err) => {
+      //       this.notify.error('Something went wrong. Please try after some time.');
+      //       console.error(err);
+      //     },
+      //   });
     }
     
     console.log("form submited");

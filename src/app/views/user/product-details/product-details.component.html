@@ -15,30 +15,54 @@
             cForm cRow
             class="needs-validation"
       >
-        <h4>
+        <h4 *ngIf="showImageSection">
           {{productName}}
           <small class="text-muted">( {{productSku}} )</small>
         </h4>
 
-        <label cLabel for="sub_category">Main Imaage</label>
-        <c-col [md]="3">          
-          <img [src]="mainImage ? mainImage : 'assets/brand/GlobeTrader_Logo_small.png'" alt="Profile Image" class="user-profile-image" />
-          <input cFormControl id="formFile" type="file" accept="image/*" (change)="onFileSelected($event)" />          
-          <label cLabel for="formFile" class="mt-2">Select Image to update the Main Image</label>
-        </c-col>
+        <div id="image_section" *ngIf="showImageSection">
+          <c-row>
+            <label cLabel for="main_image">
+              <strong>Main Image</strong> 
+            </label>
+            <c-col [md]="6">          
+              <img [src]="mainImage ? mainImage : 'assets/brand/GlobeTrader_Logo_small.png'" alt="Profile Image" class="user-profile-image" />
+              <input cFormControl id="formFile" type="file" accept="image/*" (change)="onFileSelected($event)" />          
+              <label cLabel for="formFile" class="mt-2">
+                <small>Select Image to update the Main Image</small> 
+              </label>
+            </c-col>
 
-        <c-col [md]="12">
-          <label cLabel for="sub_category">Additional Image</label>
-          <c-row>  
-            <c-col [md]="3" *ngFor="let addImg of additional_image" >
-              <img [src]="addImg.image ? imageBaseUrl+'/'+addImg.image : 'assets/brand/GlobeTrader_Logo_small.png'" alt="Profile Image" class="user-profile-image" />
-              <input cFormControl id="formFile_{{addImg.id}}" type="file" accept="image/*" (change)="onFileSelected($event)" />          
-              <label cLabel for="formFile" class="mt-2">Select Image to update the Additional Image</label>
+            <c-col [md]="6">
+              <label cLabel for="status">Product Status</label>
+              <select cSelect id="status" required formControlName="status">
+                <option *ngFor="let opt of statusOptions" [value]="opt.value">
+                  {{ opt.label }}
+                </option>
+              </select>
             </c-col>
           </c-row>
-        </c-col>
-        
-        <hr />
+          <hr>
+          <c-col [md]="12">
+            <label cLabel for="sub_category">
+              <strong>Additional Image(s)</strong>
+            </label>
+            <c-row>  
+              <c-col [md]="3" *ngFor="let addImg of finalImages" >
+                <img [src]="addImg.image ? imageBaseUrl+'/'+addImg.image : 'assets/brand/GlobeTrader_Logo_small.png'" alt="Profile Image" class="user-profile-image" />
+                <div class="image-upload-area" *ngIf="addImg.image == null">
+                  <input cFormControl id="additionalFormFile_{{addImg.id}}" type="file" accept="image/*" (change)="onAdditionalFileSelected($event, addImg)" />          
+                  <label cLabel for="formFile" class="mt-2"><small>Select Image to update the Additional Image</small></label>
+                </div>
+                <div class="image-upload-area" *ngIf="addImg.image != null">
+                  <button cButton color="danger" class="btn mb-3 btn-danger me-md-2" (click)="removeAddImage(addImg)">Remove</button>      
+                </div>
+              </c-col>
+            </c-row>
+          </c-col>
+          
+          <hr />
+        </div>
 
         <c-col [md]="6">
           <label cLabel for="category">Category</label>
@@ -102,21 +126,20 @@
         </c-col>
 
         <c-col [md]="6">
-          <label cLabel for="product_capacity">Product Capacity</label>
-          <c-col [md]="6">
-            <input cFormControl id="product_capacity" required type="text" value="" formControlName="product_capacity"/>
-          </c-col>
-          <c-col [md]="6">
-            <select cSelect id="product_capacity_unit" required formControlName="product_capacity_unit">
-            <option *ngFor="let opt of productCapacityOptions" [value]="opt">
-              {{ opt }}
-            </option>
-          </select>
-          </c-col>
+          <c-row>
+            <label cLabel for="product_capacity">Product Capacity</label>
+            <c-col [md]="6">
+              <input cFormControl id="product_capacity" required type="text" value="" formControlName="product_capacity"/>
+            </c-col>
+            <c-col [md]="6">
+              <select cSelect id="product_capacity_unit" required formControlName="product_capacity_unit">
+              <option *ngFor="let opt of productCapacityOptions" [value]="opt">
+                {{ opt }}
+              </option>
+            </select>
+            </c-col>
 
-
-          
-          
+          </c-row>
         </c-col>
 
         <c-col [md]="6">
@@ -143,21 +166,42 @@
           <textarea cFormControl id="product_description" required rows="3" formControlName="product_description"></textarea>
         </c-col>
 
-        <c-col [md]="6">
+        <!-- <c-col [md]="6">
             <label cLabel for="status">Status</label> 
             <div class="mt-6">  
               <mat-slide-toggle formControlName="status" color="success">
                 {{ productForm.get('status') ? 'ON' : 'OFF' }}
               </mat-slide-toggle>
             </div>   
-                  
-            <!-- <mat-slide-toggle formControlName="status">
-              {{ productForm.get('status')?.value ? 'Active' : 'Inactive' }}
-            </mat-slide-toggle> -->
-        </c-col>
+        </c-col> -->
 
         
         <hr class="mb-6 mt-6"/>
+
+        <c-col md="12">
+          <h4>Seller Details</h4>
+
+          <c-col>
+            <p cLabel for="seller_phone">
+              <img src="{{ seller_details?.profile_image ? seller_details?.profile_image : 'assets/brand/GlobeTrader_Logo_small.png' }}" alt="Profile Image" class="user-profile-image-small" height="100" width="auto"/>
+            </p>
+
+            <p cLabel for="seller_name">
+              <label>Seller Name :</label>  
+              {{ seller_details?.first_name }} {{ seller_details?.last_name }}
+            </p>
+
+            <p cLabel for="seller_email">
+              <label>Seller Email :</label>  
+              {{ seller_details?.email }}
+            </p>
+
+            <p cLabel for="seller_phone">
+              <label>Seller Phone :</label>  
+              {{ seller_details?.phone }}
+            </p>
+          </c-col>
+        </c-col>
         
         <!-- <h2>Business Name</h2>
 
@@ -209,7 +253,8 @@
         
         <c-col [xs]="12">
           <button cButton class="me-1" color="primary" type="submit">
-            Update Product
+            <label *ngIf="showImageSection == true">Update Product</label>
+            <label *ngIf="showImageSection == false">Add Product</label>
           </button>
 
         </c-col>

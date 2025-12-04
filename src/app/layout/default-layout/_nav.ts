@@ -25,7 +25,7 @@ export const navItems: INavDataWithPermission[] = [
   },
   {
     name: 'Request',
-    url: '/buyers-requests',
+    url: '/user/requests',
     iconComponent: { name: 'cil-bell' },
     permission: 'view_request'
   },
@@ -65,7 +65,7 @@ export const navItems: INavDataWithPermission[] = [
     name: 'Settings',
     url: '/settings',
     iconComponent: { name: 'cil-settings' },
-    permission: 'view_super_admin',
+    permission: 'view_category',
     children: [
       {
         name: 'Category',

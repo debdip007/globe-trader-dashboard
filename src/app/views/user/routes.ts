@@ -30,10 +30,24 @@ export const routes: Routes = [
     }
   },
   {
+    path: 'product-details',
+    loadComponent: () => import('./product-details/product-details.component').then(m => m.ProductDetailsComponent),
+    data: {
+      title: `Product Details`
+    }
+  },
+  {
     path: 'user-list/:type',
     loadComponent: () => import('./users/users.component').then(m => m.UsersComponent),
     data: {
       title: `User List`
+    }
+  },
+  {
+    path: 'requests',
+    loadComponent: () => import('./request/request.component').then(m => m.RequestComponent),
+    data: {
+      title: `Requests`
     }
   }
 ];
