@@ -6,6 +6,17 @@
 // custom tweaks for scrollbar styling (wip)
 @use "scrollbar";
 
+body {
+  background: linear-gradient(
+    to bottom,
+    #c2c6d9 0%,
+    #d8d8e4 60%,
+    #ffffff 100%
+  );
+  min-height: 100vh;
+  background-attachment: fixed;
+}
+
  // custom calendar today cell color
 .calendar-cell.today {
   --cui-calendar-cell-today-color: var(--cui-info) !important;
@@ -15,3 +26,64 @@
 .select-week .calendar-row.current {
   cursor: pointer;
 }
+
+.btn-success {
+  background-color: #112f63 !important;
+  color: #ffffff;
+  border-radius: 0px;
+}
+
+.btn-danger {
+  background-color: #e88d54 !important;
+}
+
+.btn-primary {
+  background-color: #112f63 !important;
+  border-radius: 0px;
+}
+
+.btn-secondary {
+  background-color: #e88d54 !important;
+}
+
+c-sidebar#sidebar1 {
+  background: transparent !important;
+}
+.sidebar-nav .nav-link {
+  color: #112f63;
+}
+
+.sidebar-nav .nav-link.active, .sidebar-nav .nav-link:hover, .sidebar-nav .nav-group.show .nav-group-toggle {
+  background: #dbdbdb !important;
+  color: #112f63;
+}
+
+.sidebar-nav svg.nav-icon {
+  overflow: hidden;
+  color: #112f63;
+}
+
+.sidebar-nav .nav-link.active .nav-icon, .sidebar-nav .nav-link:hover .nav-icon {
+  color: #112f63;
+}
+
+.sidebar-nav .nav-link .nav-icon {
+  width: 22px;           /* actual icon size */
+  height: 22px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Create the circle BEHIND the icon */
+// .sidebar-nav .nav-link .nav-icon::before {
+//   content: "";
+//   position: absolute !important;
+//   top: 50% !important;
+//   left: 50% !important;
+//   width: 38px !important;
+//   height: 38px !important;
+//   transform: translate(-50%, -50%) !important;
+//   border-radius: 50% ;
+//   background-color: #036cec7e !important;
+//   z-index: -1;
+// }

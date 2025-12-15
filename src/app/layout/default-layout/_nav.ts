@@ -11,10 +11,6 @@ export const navItems: INavDataWithPermission[] = [
     name: 'Dashboard',
     url: '/dashboard',
     iconComponent: { name: 'cil-speedometer' },
-    badge: {
-      color: 'info',
-      text: 'NEW'
-    },
     permission: 'view_dashboard'
   },
   {

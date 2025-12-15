@@ -1,16 +1,16 @@
 <!--sidebar-->
 <c-sidebar
   #sidebar1="cSidebar"
-  class="d-print-none sidebar sidebar-fixed border-end"
+  class="d-print-none sidebar sidebar-fixed"
   colorScheme="dark"
   id="sidebar1"
   visible
 >
-  <c-sidebar-header class="border-bottom">
+  <c-sidebar-header class="">
     <c-sidebar-brand [routerLink]="[]">
-      <img src="assets/brand/GlobeTrader_Logo_small.png" height="40" alt="Globe Trader Logo" class="img-responsive"/>
+      <img src="assets/brand/GlobeTrader_Logo_White.png" height="40" alt="Globe Trader Logo" class="img-responsive"/>
       <!-- <svg [class]="{icon: false}" cIcon class="sidebar-brand-full" height="32" name="logo" title="Globe Trader"></svg> -->
-      <span class="sidebar-brand-full fs-5 fw-semibold ms-2">Globe Trader</span>
+      <span class="sidebar-brand-full fs-5 fw-semibold ms-2" style="color: #2964b2;">Globe<label style="font-weight: 100 !important;">Trader</label></span>
       <br>
       <!-- <small class="sidebar-brand-full fs-6 fw-semibold ms-2">Seller Admin Dashboard</small> -->
     </c-sidebar-brand>
@@ -21,7 +21,7 @@
   </ng-scrollbar>
 
   @if (!sidebar1.narrow) {
-    <c-sidebar-footer cSidebarToggle="sidebar1" class="border-top d-none d-lg-flex" toggle="unfoldable" style="cursor: pointer;">
+    <c-sidebar-footer cSidebarToggle="sidebar1" class=" d-none d-lg-flex" toggle="unfoldable" style="cursor: pointer;">
       <button cSidebarToggler aria-label="Toggle sidebar fold"></button>
     </c-sidebar-footer>
   }
@@ -38,7 +38,7 @@
   />
   <!--app-body-->
   <div class="body flex-grow-1">
-    <c-container breakpoint="lg" class="h-auto px-4">
+    <c-container breakpoint="lg" class="h-auto">
       <router-outlet />
     </c-container>
   </div>
